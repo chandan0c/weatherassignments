@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: flex;
+        }
+        #data{
+            padding: 20px 100px 0px 20px;
+        }
+    </style>
+</head>
+<body>
+     <input type="text" placeholder="enter your city name" id="cityName">
+     <button onclick="weatherData()">Search</button>
+     <div id="container">
+        <div id="data"></div>
+        <div id="map"><div class="mapouter"><div class="gmap_canvas"><iframe width="600" height="500" id="gmap_canvas" src="" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://fmovies-online.net"></a><br><style>.mapouter{position:relative;text-align:right;height:500px;width:600px;}</style><a href="https://www.embedgooglemap.net">html embed google map</a><style>.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}</style></div></div></div>
+    </div>
+
+</body>
+</html>
+<script>
+    async function weatherData(){
+        let key="e0df3187efc37168598569458d7c2d1b"
+        let cityName=document.getElementById("cityName").value;
+        let mapId=document.getElementById("gmap_canvas");
+        let src=`https://maps.google.com/maps?q=${cityName}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+        let url=`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}`
+        mapId.src=src;
+        /*https://api.openweathermap.org/data/2.5/weather?q=bhopal&appid=e0df3187efc37168598569458d7c2d1b*/
+        let res=await fetch(url);
+        let data=await res.json();
+         if(data.message){
+            let container=document.getElementById("data");
+            container.innerText=""
+            container.innerText=data.message;
+            console.log(data.message)
+         }
+         else{
+            fetchData(data)
+         }
+    } 
+    async function fetchData(res){
+        console.log(res);
+        let div=document.createElement("div");
+        let humidity=document.createElement("p");
+        humidity.innerText="Humidity :"+res.main.humidity;
+        let tempMax=document.createElement("p");
+        tempMax.innerText="max-temp :"+res.main.temp_max;
+        let tempMin=document.createElement("p");
+        tempMin.innerText="min-temp :"+res.main.temp_min;
+        let windSpeed=document.createElement("p");
+        windSpeed.innerText="wind-speed :"+res.wind.speed;
+        let visibility=document.createElement("p");
+        visibility.innerText="Visibility :"+res.visibility;
+        div.append(humidity,tempMax,tempMin,windSpeed,visibility)
+        let container=document.getElementById("data");
+        container.innerText="";
+        container.append(div);
+    }
+
+</script>
